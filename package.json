@@ -1,0 +1,30 @@
+{
+  "name": "proyectofinal---venta-online",
+  "version": "1.0.0",
+  "description": "Proyecto Final de bimestre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgongora2019063/ProyectoFinal---Venta-Online.git"
+  },
+  "author": "José Góngora",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgongora2019063/ProyectoFinal---Venta-Online/issues"
+  },
+  "homepage": "https://github.com/jgongora2019063/ProyectoFinal---Venta-Online#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "connect-multiparty": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.18",
+    "nodemon": "^2.0.7"
+  }
+}
