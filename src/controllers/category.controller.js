@@ -38,7 +38,7 @@ function addCategory(req,res){
 }
 
 function getCategories(req,res){
-    if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
+    //if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
     
     Category.find((err, categoriesFound) => {
         if(err) return res.status(500).send({ message: 'Error in the request' })
@@ -69,7 +69,7 @@ function deleteCategory(req,res){
 
     Category.findById(IdCategory, (err, categoryFound) => {
         if(categoryFound){
-            createCategoryDefault
+            createCategoryDefault()
 
             Category.findOne({ name: 'Default' }, (err, categoryDefaultFound) => {
                 if(err) if(err) return res.status(500).send({ message: 'Error in the request' })
@@ -117,10 +117,35 @@ function createCategoryDefault(req,res){
     } )  
 }
 
+function getProductByCategory(req,res){
+    var params = req.body;
+
+    //if(req.user.rol != 'ROL_CLIENT') return res.status(500).send({ message: 'You dont have the permissions' })
+
+    if(params.nameCategory){
+        Category.findOne({ name: params.nameCategory }, (err, categoryFound) => {
+            if(err) return res.status(500).send({ message: 'Error in the request' })
+            if(!categoryFound) return res.status(500).send({ message: 'Category not exists' })
+
+            Product.find({ idCategory: categoryFound._id }, (err, productsFound) => {
+                if(err) return res.status(500).send({ message: 'Error in the request' })
+                if(!productsFound) return res.status(500).send({ message: 'Error getting the product' })
+
+                return res.status(200).send({ productsFound })
+            } )
+
+        } )
+    }else {
+        return res.status(500).send({ message: 'One field is missing for full' })
+    }
+
+}
+
 module.exports = {
     addCategory,
     getCategories,
     editCategory,
     deleteCategory,
-    createCategoryDefault
+    createCategoryDefault,
+    getProductByCategory
 }
