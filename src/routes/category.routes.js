@@ -10,6 +10,7 @@ var api = express.Router()
 api.post('/addCategory', md_authentication.ensureAuth, categoryController.addCategory);
 api.get('/getCategories', md_authentication.ensureAuth, categoryController.getCategories);
 api.put('/editCategory/:IdCategory', md_authentication.ensureAuth, categoryController.editCategory);
-api.get('/deleteCategory/:IdCategory', md_authentication.ensureAuth, categoryController.deleteCategory)
+api.delete('/deleteCategory/:IdCategory', md_authentication.ensureAuth, categoryController.deleteCategory);
+api.get('/getProductsByCategory', md_authentication.ensureAuth, categoryController.getProductByCategory)
 
 module.exports = api;
