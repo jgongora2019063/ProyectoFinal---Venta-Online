@@ -175,6 +175,9 @@ function editUser(req,res){
             if(!userFounByID) return res.status(500).send({ message: 'The user couldnt not be found' })
             if(userFounByID.rol === 'ROL_ADMIN') return res.status(500).send({ message: 'Cannot modify an admin user' })
             User.findByIdAndUpdate(IdUser, params, {new: true, useFindAndModify: false}, (err, editedUser) => {
+                if(params.rol != 'ROL_ADMIN' && params.rol != 'ROL_CLIENT'){
+                    return res.status(500).send({ message: 'The rol can only be ROL_ADMIN or ROL_CLIENT' })
+                }
                 if(err) return res.status(500).send({ message: 'Error in the request' })
                 if(!editedUser) return res.status(500).send({ message: 'The user couldnt not be found' })
                 if(editedUser.rol === 'ROL_CLIENT') {
