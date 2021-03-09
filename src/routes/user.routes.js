@@ -10,6 +10,7 @@ api.post('/login', userController.login);
 api.post('/registerUser', md_authentication.ensureAuth, userController.registerUser);
 api.post('/registerClient', userController.registerUserClient);
 api.put('/editUser/:IdUser', md_authentication.ensureAuth, userController.editUser);
-api.delete('/deleteUser/:IdUser', md_authentication.ensureAuth, userController.deleteUser)
+api.delete('/deleteUser/:IdUser', md_authentication.ensureAuth, userController.deleteUser);
+api.put('/addProductToCart', md_authentication.ensureAuth, userController.addProductToCart)
 
 module.exports = api

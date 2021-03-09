@@ -222,11 +222,27 @@ function deleteUser(req,res){
     }
 }
 
+function addProductToCart(req,res){
+    var IdUser = req.user.sub;
+    var params = req.body;
+
+    if(req.user.rol != 'ROL_CLIENT') return res.status(500).send({ message: 'The ROL_ADMIN cannot have a cart' })
+
+    User.findByIdAndUpdate(IdUser,  { $push: { "shoppingCart.products": {  idProduct: params.idProduct, amount: params.amount }}},
+        { new: true, useFindAndModify: false }, (err, addedShoppingCart) => {
+            if(err) return res.status(500).send({ message: 'Error in the request' })
+            if(!addedShoppingCart) return res.status(500).send({ message: 'Error adding the shopping cart' })
+
+            return res.status(200).send({ addedShoppingCart })
+    } )
+}
+
 module.exports = {
     createAdmin,
     login,
     registerUser,
     registerUserClient,
     editUser,
-    deleteUser
+    deleteUser,
+    addProductToCart
 }
