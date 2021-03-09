@@ -10,7 +10,7 @@ var ProductSchema = Schema({
     brand: String,
     amount: Number,
     quantitysold: Number,
-    idCategory: {type: Schema.ObjectId, ref: 'categories'}
+    idCategory: {type: Schema.Types.ObjectId, ref: 'categories'}
 })
 
 module.exports = mongoose.model('products', ProductSchema)

@@ -18,6 +18,8 @@ function addProduct(req,res){
 
         if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
 
+        if(params.amount <= 0 || params.price <= 0.01 ) return res.status(500).send({ message: 'Low values ​​cannot be entered' })
+
         Product.find({ name: params.name, brand: params.brand }, (err, productFound) => { 
             if(err) return res.status(500).send({ message: 'Error in the request' })
             
@@ -109,6 +111,32 @@ function getProductByName(req,res){
 
 }
 
+function stockControl(req,res){
+    var IdProduct = req.params.IdProduct;
+
+    if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
+
+    Product.findById( IdProduct, (err, productFound) => {
+        if(err) return res.status(500).send({ message: 'Error in the request' })
+        if(!productFound) return res.status(500).send({ message: 'Error getting the product' })
+        if(productFound.amount >= 1){
+            return res.status(200).send({  productFound ,message: 'Product available' })
+        }else {
+            return res.status(200).send({ message: 'Product not avilable' })
+        }
+
+    } )
+}
+
+function outOfStockProducts(req,res){
+    if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
+
+    Product.find({amount: 0},(err, productsFounds) => {
+        if(err) return res.status(500).send({ message: 'Error in the request' })
+        if(!productsFounds) return res.status(500).send({ message: 'Error getting the product' })
+        return res.status(200).send({ productsFounds })
+    } )
+}
 
 module.exports = {
     addProduct,
@@ -116,5 +144,7 @@ module.exports = {
     deleteProduct,
     getProductById,
     getProducts,
-    getProductByName
+    getProductByName,
+    stockControl,
+    outOfStockProducts
 }
