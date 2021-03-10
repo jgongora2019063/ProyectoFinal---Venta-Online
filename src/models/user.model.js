@@ -8,14 +8,7 @@ var UserSchema = Schema({
     lastname: String,
     user: String,
     password: String,
-    rol: String,
-    shoppingCart: {
-        products: [{
-            idProduct: { type: Schema.Types.ObjectId, ref: 'products' },
-            amount: Number
-        }],
-        total: Number
-    }
+    rol: String
 })
 
 module.exports = mongoose.model('users', UserSchema)

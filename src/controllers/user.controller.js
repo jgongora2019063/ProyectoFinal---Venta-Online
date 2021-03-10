@@ -2,6 +2,8 @@
 
 const userModel = require('../models/user.model')
 const User = require('../models/user.model')
+const Product = require('../models/product.model')
+const cartController = require('../controllers/shoppingCart.controller')
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require('../services/user.jwt')
 
@@ -51,7 +53,12 @@ function login(req,res){
             bcrypt.compare(params.password, userFound.password, (err, passCorrect) => {
                 if(passCorrect){
                     if(params.getToken === 'true'){
-                        return res.status(200).send({ token: jwt.createToken(userFound) })
+                        if(userFound.rol != 'ROL_CLIENT'){
+                            return res.status(200).send({ token: jwt.createToken(userFound) })
+                        }else {
+                            cartController.createCart(userFound._id)
+                            return res.status(200).send({ token: jwt.createToken(userFound) })
+                        }
                     }else {
                         userFound.password = undefined
                         return res.status(200).send(userFound)
@@ -222,7 +229,7 @@ function deleteUser(req,res){
     }
 }
 
-function addProductToCart(req,res){
+/*function addProductToCart(req,res){
     var IdUser = req.user.sub;
     var params = req.body;
 
@@ -233,9 +240,23 @@ function addProductToCart(req,res){
             if(err) return res.status(500).send({ message: 'Error in the request' })
             if(!addedShoppingCart) return res.status(500).send({ message: 'Error adding the shopping cart' })
 
-            return res.status(200).send({ addedShoppingCart })
+            Product.findById(params.idProduct, (err, productFound) => {
+                if(err) return res.status(500).send({ message: 'Error in the request' })
+
+                var priceProduct = productFound.price;
+
+            var totalL = priceProduct*params.amount
+
+            User.findByIdAndUpdate(IdUser, {shoppingCart: { total: totalL }}, { new: true, useFindAndModify: false }, (err, productTotal) => {
+                if(err) return res.status(500).send({ message: 'Error in the request' })
+                if(!productTotal) return res.status(500).send({ message: 'Error adding the shopping cart' })
+
+                
+                return res.status(200).send({ productTotal })
+            })
+        })
     } )
-}
+}*/
 
 module.exports = {
     createAdmin,
@@ -244,5 +265,5 @@ module.exports = {
     registerUserClient,
     editUser,
     deleteUser,
-    addProductToCart
+    //addProductToCart
 }
