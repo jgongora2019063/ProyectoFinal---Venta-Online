@@ -18,18 +18,18 @@ function addCategory(req,res){
         Category.find({ $or: [
             { name: params.name }
         ] }).exec((err, categoryFound) => {
-            if(err) return res.status(500).send({ mensaje: 'Error in the request' })
+            if(err) return res.status(500).send({ message: 'Error in the request' })
 
             if(categoryFound && categoryFound.length >= 1){
-                return res.status(500).send({ mensaje: 'The category already exists' })
+                return res.status(500).send({ message: 'The category already exists' })
             }else {
                 categoryModel.save((err, categorySaved) => {
-                    if(err) return console.log('Error saving category')
+                    if(err) return res.status(500).send({ message: 'Error saving category' })
 
                     if(categorySaved){
                         res.status(200).send(categorySaved)
                     }else {
-                        return console.log('The category could not be created')
+                        return res.status(500).send({ message: 'The category could not be created' })
                     }
                 } )
             }
