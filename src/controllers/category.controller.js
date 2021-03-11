@@ -1,7 +1,7 @@
 'use strict'
 
-const categoryModel = require('../models/category.model')
 const Category = require('../models/category.model')
+const categoryModel = require('../models/category.model')
 const Product = require('../models/product.model')
 const jwt = require('../services/user.jwt')
 

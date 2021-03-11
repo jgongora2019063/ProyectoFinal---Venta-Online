@@ -1,7 +1,7 @@
 'use strict'
 
-const productModel = require('../models/product.model');
 const Product = require('../models/product.model')
+const productModel = require('../models/product.model')
 const jwt = require('../services/user.jwt')
 
 function addProduct(req,res){

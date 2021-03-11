@@ -72,7 +72,17 @@ function addProductToCart(req,res){
 
 }
 
+function deleteCart(IdUser,res){
+
+    Cart.findOneAndDelete({ idUser: IdUser }, (err, cartDeleted) => {
+        if(err) return res.status(500).send({ message: 'Error in the request' })
+        if(!cartDeleted) return res.status(500).send({ message: 'Error deleting the cart' })
+
+    } )
+}
+
 module.exports = {
     createCart,
-    addProductToCart
+    addProductToCart,
+    deleteCart
 }
