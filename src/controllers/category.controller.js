@@ -71,7 +71,8 @@ function deleteCategory(req,res){
         if(categoryFound){
             Category.findOne({ name: 'Default' }, (err, categoryDefaultFound) => {
                 if(err) if(err) return res.status(500).send({ message: 'Error in the request' })
-                if(!categoryDefaultFound) return res.status(500).send({ message: 'There is no default category' })                
+                if(!categoryDefaultFound) return res.status(500).send({ message: 'There is no default category' })
+                if(categoryDefaultFound._id == IdCategory) return res.status(500).send({ message: 'Cant delete default category' })                
                 Product.updateMany({ idCategory: IdCategory },{ idCategory: categoryDefaultFound._id }, (err, editedProduct) => {
                     if(err) return res.status(500).send({ message: 'Error in the request' })
                     if(!editedProduct) return res.status(500).send({ message: 'Error when editing prodructs' })
