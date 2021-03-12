@@ -138,6 +138,24 @@ function outOfStockProducts(req,res){
     } )
 }
 
+function getTopSellingProducts(req,res){
+    //if(req.user.rol != 'ROL_ADMIN') return res.status(500).send({ message: 'You dont have the permissions' })
+
+    Product.aggregate([
+        {
+            $project: { _id: 1, name: 1, brand: 1, price: 1, quantitySold: 1}
+        },
+        {
+            $sort: { quantitySold: -1 }
+        },
+        {
+            $limit: 3
+        }
+    ]).exec((err, productsFound) => {
+        return res.status(200).send({ productsFound })
+    } )
+}
+
 module.exports = {
     addProduct,
     editProduct,
@@ -146,5 +164,6 @@ module.exports = {
     getProducts,
     getProductByName,
     stockControl,
-    outOfStockProducts
+    outOfStockProducts,
+    getTopSellingProducts
 }

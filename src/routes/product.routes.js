@@ -13,8 +13,9 @@ api.delete('/deleteProduct/:IdProduct', md_authentication.ensureAuth, productCon
 api.get('/getProductbyId/:IdProduct', md_authentication.ensureAuth, productController.getProductById);
 api.get('/getProducts', md_authentication.ensureAuth, productController.getProducts);
 api.get('/getProductByName', productController.getProductByName);
-api.get('/stockControl/:IdProduct', md_authentication.ensureAuth, productController.stockControl)
-api.get('/outOfStockProducts', md_authentication.ensureAuth, productController.outOfStockProducts)
+api.get('/stockControl/:IdProduct', md_authentication.ensureAuth, productController.stockControl);
+api.get('/outOfStockProducts', md_authentication.ensureAuth, productController.outOfStockProducts);
+api.get('/getTop', md_authentication.ensureAuth, productController.getTopSellingProducts)
 
 
 module.exports = api;

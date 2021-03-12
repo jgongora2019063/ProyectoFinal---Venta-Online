@@ -9,7 +9,7 @@ var ProductSchema = Schema({
     price: Number,
     brand: String,
     amount: Number,
-    quantitysold: Number,
+    quantitySold: {type: Number, default: 0},
     idCategory: {type: Schema.Types.ObjectId, ref: 'categories'}
 })
 
