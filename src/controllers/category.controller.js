@@ -69,8 +69,6 @@ function deleteCategory(req,res){
 
     Category.findById(IdCategory, (err, categoryFound) => {
         if(categoryFound){
-            createCategoryDefault()
-
             Category.findOne({ name: 'Default' }, (err, categoryDefaultFound) => {
                 if(err) if(err) return res.status(500).send({ message: 'Error in the request' })
                 if(!categoryDefaultFound) return res.status(500).send({ message: 'There is no default category' })                
@@ -104,13 +102,15 @@ function createCategoryDefault(req,res){
     Category.find({ $or: [
         { name: name }
     ] }).exec((err, categoryFound) => {
-        if(err) return res.status(500).send({ mensaje: 'Error in the request' })
+        if(err) console.log('Error in the request' )
 
         if(categoryFound && categoryFound.length < 1){
             categoryModel.save((err, categorySaved) => {
-                if(err) return console.log('Error saving category')
+                if(err) console.log('Error saving category')
                 if(!categorySaved){
                     return console.log('The category could not be created')
+                }else{
+                    return console.log('Category created')
                 }
             })
         }
