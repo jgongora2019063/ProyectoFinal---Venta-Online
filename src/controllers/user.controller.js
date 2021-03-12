@@ -197,8 +197,10 @@ function editUser(req,res){
                 if(!editedUser) return res.status(500).send({ message: 'The user couldnt not be found' })
                 if(editedUser.rol === 'ROL_CLIENT') {
                     return res.status(200).send({ editedUser })
+                }else{
+                    cartController.deleteCart(userFounByID._id)
+                    return res.status(200).send({ editedUser })
                 }
-                return res.status(200).send({ editedUser })
             } )
         } )
     }
