@@ -22,11 +22,25 @@ function confirmPurchase(req,res){
         billModel.products = cartFound.product;
         billModel.total = cartFound.total;
 
-        
+        for (let i = 0; i < billModel.products.length; i++) {
+            var element = billModel.products[i].idProduct;
+            var amountE = billModel.products[i].amount;
+            // Para incrementar las veces que se ha vendido el product
+            Product.findByIdAndUpdate(element, {$inc: { quantitySold: +1 }}, { new: true, useFindAndModify: false }, (err, productFound) =>{
+                if(err) return res.status(500).send({ message: 'Error in the request' })
+                if(!productFound) return res.status(500).send({ message: 'Error editing the product' })
+                // Para restar del stock las cantidades vendidas
+                Product.findByIdAndUpdate(element,{ amount: productFound.amount-amountE }, {new: true, useFindAndModify: false}, (err,productFoundA) =>{
+                    if(err) return res.status(500).send({ message: 'Error in the request' })
+                    if(!productFoundA) return res.status(500).send({ message: 'Error editing the product' })
+                })
+            })
+            
+        }
 
-        cartController.deleteCart(IdUser); // Function to delete a cart on shoppingCartController
+        cartController.deleteCart(IdUser); // Función para eliminar el carrito, la cual se encuentra en shoppingCartController
 
-        cartController.createCart(IdUser); // // Function to create a cart on shoppingCartController
+        cartController.createCart(IdUser); // Función para crear nuevamente el carrito, la cual se encuentra en shoppingCartController
 
 
         billModel.save((err, billSaved) => {
