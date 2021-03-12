@@ -41,16 +41,7 @@ function addProductToCart(req,res){
         if(params.amount <= 0 ) return res.status(500).send({ message: 'Must be greater than zero' })
             
         
-        if(params.amount > productFoundY.amount) return res.status(500).send({ message: 'Not enough units' })
-
-        /*Cart.findOne({idUser: req.user.sub}, (err, cartFound) => {
-            if(err) return res.status(500).send({ message: 'Error in the request' })
-
-            if(cartFound.idProduct === params.idProduct){
-                params.amount = cartFound.amount+params.
-            }*/
-
-        
+        if(params.amount > productFoundY.amount) return res.status(500).send({ message: 'Not enough units' })       
         
             Cart.findOneAndUpdate({ idUser: req.user.sub }, { $push: { product: {idProduct: params.idProduct, amount: params.amount} }},
                 {new: true, useFindAndModify: false}, (err, cartAdded) => {
@@ -76,7 +67,6 @@ function addProductToCart(req,res){
             
                     } )
             } )
-        //} )
    })
 
 
